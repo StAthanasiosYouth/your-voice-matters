@@ -10,10 +10,23 @@ on phones.
 
 ## How it works
 
-The app runs as a **Google Apps Script web app**. `Index.html` is an
+The app runs as a **Google Apps Script web app**.
+[`apps-script/Index.html`](apps-script/Index.html) is an
 [HTML Service template](https://developers.google.com/apps-script/guides/html/templates):
 the server fills in the template variables, serves the page, and receives the
 submission through `google.script.run`.
+
+The public link is <https://stathanasiosyouth.github.io/your-voice-matters/>.
+GitHub Pages serves the root [`index.html`](index.html), which only shows the
+Apps Script web app full-screen in an iframe. The app can't run on Pages
+directly: template tags and `google.script.run` only work when Apps Script
+serves the page.
+
+| File                     | Where it runs                               |
+| ------------------------ | ------------------------------------------- |
+| `apps-script/Index.html` | Apps Script (the actual app)                |
+| `index.html`             | GitHub Pages (iframe wrapper around `/exec`) |
+| `res/`                   | Images, loaded from GitHub by both          |
 
 ### Feedback types
 
@@ -112,16 +125,25 @@ function doGet() {
   return template
     .evaluate()
     .setTitle('صوتك يهمنا')
-    .addMetaTag('viewport', 'width=device-width, initial-scale=1');
+    .addMetaTag('viewport', 'width=device-width, initial-scale=1')
+    // required, or the GitHub Pages iframe shows a blank/refused page
+    .setXFrameOptionsMode(HtmlService.XFrameOptionsMode.ALLOWALL);
 }
 ```
 
 ## Deploying
 
 1. Open (or create) the Apps Script project at <https://script.google.com>.
-2. Add an HTML file named `Index` and paste in the contents of `Index.html`.
+2. Add an HTML file named `Index` and paste in the contents of
+   `apps-script/Index.html`.
 3. Add the server code (`doGet` and `submitMessages`).
-4. **Deploy → New deployment → Web app**, then choose who can access it.
+4. **Deploy → New deployment → Web app**. Set *Execute as* to **Me** and
+   *Who has access* to **Anyone**, or visitors on GitHub Pages will be asked to
+   sign in.
+5. Put the `/exec` URL in the root `index.html` iframe `src`.
+
+To update the app later, use **Deploy → Manage deployments → Edit → New
+version**. That keeps the same `/exec` URL, so `index.html` doesn't change.
 
 Optional: use [clasp](https://github.com/google/clasp) to push from this repo
 instead of copy-pasting (`clasp clone <scriptId>`, then `clasp push`).
