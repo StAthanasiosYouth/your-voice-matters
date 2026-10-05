@@ -1922,6 +1922,35 @@ textarea {
 }
 
 
+.short-textarea {
+
+  min-height:
+    84px;
+
+}
+
+
+.conditional-field {
+
+  display:
+    none;
+
+}
+
+
+.conditional-field.show {
+
+  display:
+    flex;
+
+  animation:
+    formIn
+    .35s
+    both;
+
+}
+
+
 input:focus,
 textarea:focus,
 select:focus {
@@ -4184,6 +4213,28 @@ label {
           </div>
 
 
+          <!-- shown only when "زيارة" is chosen -->
+
+          <div
+            id="contactAddressField"
+            class="field conditional-field"
+          >
+
+            <label for="contactAddress">
+              عنوانك
+              <span class="required">*</span>
+            </label>
+
+            <textarea
+              id="contactAddress"
+              class="short-textarea"
+              autocomplete="street-address"
+              placeholder="المنطقة، الشارع، رقم العمارة والدور، أو أي علامة مميزة..."
+            ></textarea>
+
+          </div>
+
+
           <div class="field">
 
             <label>
@@ -4891,6 +4942,8 @@ window.addEventListener(
     setupTypeCards();
 
     setupCustomSelects();
+
+    setupContactAddress();
 
     setupPhoneInputs();
 
@@ -5774,6 +5827,77 @@ function resetFormSection(
 
       }
     );
+
+
+  updateContactAddress(
+    false
+  );
+
+}
+
+
+/* =========================================================
+   CONTACT ADDRESS - only for "زيارة"
+========================================================= */
+
+function setupContactAddress() {
+
+  document
+    .getElementById(
+      'contactMethod'
+    )
+    .addEventListener(
+      'change',
+      () => updateContactAddress(true)
+    );
+
+
+  updateContactAddress(
+    false
+  );
+
+}
+
+
+function updateContactAddress(
+  focus
+) {
+
+  const visit =
+    document
+      .getElementById(
+        'contactMethod'
+      )
+      .value ===
+    'visit';
+
+
+  document
+    .getElementById(
+      'contactAddressField'
+    )
+    .classList
+    .toggle(
+      'show',
+      visit
+    );
+
+
+  if (
+    visit &&
+    focus
+  ) {
+
+    document
+      .getElementById(
+        'contactAddress'
+      )
+      .focus({
+        preventScroll:
+          true
+      });
+
+  }
 
 }
 
@@ -7401,6 +7525,9 @@ function collectItem(
     contactMethod:
       '',
 
+    contactAddress:
+      '',
+
     personName:
       '',
 
@@ -7468,6 +7595,19 @@ function collectItem(
       valueOf(
         'contactMethod'
       );
+
+
+    if (
+      item.contactMethod ===
+      'visit'
+    ) {
+
+      item.contactAddress =
+        valueOf(
+          'contactAddress'
+        );
+
+    }
 
 
     item.message =
@@ -7622,6 +7762,18 @@ function validateItemClient(
   ) {
 
     return 'اختار طريقة التواصل المناسبة.';
+
+  }
+
+
+  if (
+    item.type ===
+    'contact' &&
+    item.contactMethod === 'visit' &&
+    !item.contactAddress
+  ) {
+
+    return 'اكتب عنوانك علشان نقدر نزورك.';
 
   }
 

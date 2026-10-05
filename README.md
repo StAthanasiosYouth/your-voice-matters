@@ -34,7 +34,7 @@ serves the page.
 | ------------- | -------------------------------- | --------------------------------------------------------------- |
 | `suggestion`  | عندي رأي أو اقتراح               | Message; anonymous or named                                     |
 | `complaint`   | في حاجة مضايقاني                 | Message; whether they want to be contacted                      |
-| `contact`     | محتاج حد من الخدمة يتواصل معايا   | Contact method (WhatsApp, call, visit, any); optional note      |
+| `contact`     | محتاج حد من الخدمة يتواصل معايا   | Contact method (WhatsApp, call, visit, any); address for visits; optional note |
 | `followup`    | في شخص محتاج نفتقده              | Person's name, phone, area, details; whether they know          |
 | `prayer`      | محتاج صلاة أو مشورة               | Message; whether they want to talk to someone                   |
 | `positive`    | حابب أقول حاجة حلوة              | Message; anonymous or named                                     |
@@ -98,6 +98,7 @@ To change an image, replace the file and push to `main`.
       identity,          // "anonymous" | "named"
       wantsContact,      // "yes" | "no"
       contactMethod,     // "whatsapp" | "call" | "visit" | "any"
+      contactAddress,    // filled only when contactMethod is "visit"
       personName,
       personPhone,
       personArea,
