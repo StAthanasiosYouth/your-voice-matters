@@ -2,8 +2,8 @@
 
 A feedback web app for the St. Athanasios youth service. Members can send
 suggestions, raise concerns, ask for contact or prayer, point out someone who
-needs follow-up, share encouragement, or volunteer to help — several at once,
-in one submission.
+needs follow-up, share encouragement, or volunteer to help. They pick one at a
+time and can send another right after.
 
 The UI is in Arabic (Egyptian dialect), right-to-left, and built to work well
 on phones.
@@ -27,10 +27,30 @@ submission through `google.script.run`.
 | `positive`    | حابب أقول حاجة حلوة              | Message; anonymous or named                                     |
 | `participate` | حابب أشارك أو أساعد              | Area (organization, activities, media, acting, music, …); note  |
 
-The sender's name and phone are asked for **once**, and only when a selected
-item needs them (a named message, a contact request, etc.). Phone numbers are
-validated as Egyptian mobiles (`01[0125]XXXXXXXX` or `+201…`), and Arabic or
-Persian digits are converted automatically.
+The cards work like radio buttons: picking one shows only that type's form.
+The sender's name and phone are asked for only when the chosen item needs them
+(a named message, a contact request, etc.), and they're kept between
+submissions. Phone numbers are validated as Egyptian mobiles
+(`01[0125]XXXXXXXX` or `+201…`), and Arabic or Persian digits are converted
+automatically.
+
+### After sending
+
+A popup confirms the submission with an animation that fits its type, then
+asks whether there's something else to send. **Yes** clears the form and
+scrolls back to the choices; **No** shows the thank-you screen.
+
+| Type          | Mood   | Animation                          |
+| ------------- | ------ | ---------------------------------- |
+| `suggestion`  | Joyful | Confetti cannons from both corners |
+| `positive`    | Joyful | Burst of hearts                    |
+| `participate` | Joyful | Burst of gold stars                |
+| `contact`     | Light  | Ripple rings and floating gold dots |
+| `followup`    | Warm   | Hearts rising slowly               |
+| `prayer`      | Warm   | Flickering candle and rising embers |
+| `complaint`   | Calm   | Soft blue lights drifting up       |
+
+The animations are skipped when the device asks for reduced motion.
 
 ## Server-side contract
 
@@ -76,9 +96,10 @@ To change an image, replace the file and push to `main`.
 }
 ```
 
-Unused fields are sent as empty strings. On success, return an object with a
-`count` property (number of items saved); the page uses it to choose its thank-you
-message. Throw an `Error` to show its message to the user.
+`items` always holds exactly one item, since one type is sent at a time. It stays
+an array so the server code doesn't need to change. Unused fields are sent as
+empty strings. The page ignores the return value. Throw an `Error` to show its
+message to the user.
 
 Minimal `doGet` example:
 

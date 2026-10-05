@@ -189,7 +189,8 @@ body {
 }
 
 
-body.intro-lock {
+body.intro-lock,
+body.modal-open {
 
   overflow:
     hidden;
@@ -861,6 +862,20 @@ select {
 }
 
 
+.type-card:focus-visible {
+
+  outline:
+    2px solid
+    var(--gold-light);
+
+  outline-offset:
+    3px;
+
+}
+
+
+/* RADIO DOT */
+
 .card-check {
 
   position:
@@ -873,10 +888,10 @@ select {
     10px;
 
   width:
-    23px;
+    22px;
 
   height:
-    23px;
+    22px;
 
   display:
     grid;
@@ -885,20 +900,44 @@ select {
     center;
 
   border:
-    1px solid
-    rgba(255,255,255,.11);
+    2px solid
+    rgba(255,255,255,.2);
 
   border-radius:
     50%;
 
-  color:
-    transparent;
-
   background:
     rgba(255,255,255,.03);
 
-  font-size:
-    .7rem;
+  transition:
+    border-color .22s;
+
+}
+
+
+.card-check::after {
+
+  content:
+    "";
+
+  width:
+    10px;
+
+  height:
+    10px;
+
+  border-radius:
+    50%;
+
+  background:
+    var(--gold-light);
+
+  transform:
+    scale(0);
+
+  transition:
+    transform .22s
+    cubic-bezier(.34,1.56,.64,1);
 
 }
 
@@ -906,14 +945,17 @@ select {
 .type-card.active
 .card-check {
 
-  color:
-    #112038;
-
   border-color:
     var(--gold-light);
 
-  background:
-    var(--gold-light);
+}
+
+
+.type-card.active
+.card-check::after {
+
+  transform:
+    scale(1);
 
 }
 
@@ -1878,9 +1920,608 @@ label {
 }
 
 
+.secondary-button {
+
+  width:
+    100%;
+
+  min-height:
+    50px;
+
+  cursor:
+    pointer;
+
+  border:
+    1px solid
+    rgba(255,255,255,.13);
+
+  border-radius:
+    14px;
+
+  color:
+    rgba(255,255,255,.78);
+
+  background:
+    rgba(255,255,255,.035);
+
+  font-size:
+    .85rem;
+
+  font-weight:
+    700;
+
+  transition:
+    .2s;
+
+}
+
+
+.secondary-button:hover {
+
+  border-color:
+    rgba(255,255,255,.26);
+
+  color:
+    white;
+
+}
+
+
+/* =========================================================
+   CELEBRATION POPUP
+========================================================= */
+
+.celebration {
+
+  position:
+    fixed;
+
+  inset:
+    0;
+
+  z-index:
+    9000;
+
+  display:
+    grid;
+
+  place-items:
+    center;
+
+  padding:
+    18px;
+
+  background:
+    rgba(2,9,20,.72);
+
+  backdrop-filter:
+    blur(6px);
+
+  opacity:
+    0;
+
+  transition:
+    opacity .35s;
+
+}
+
+
+.celebration[hidden] {
+
+  display:
+    none;
+
+}
+
+
+.celebration.show {
+
+  opacity:
+    1;
+
+}
+
+
+.celebration-canvas {
+
+  position:
+    fixed;
+
+  inset:
+    0;
+
+  z-index:
+    2;
+
+  width:
+    100%;
+
+  height:
+    100%;
+
+  pointer-events:
+    none;
+
+}
+
+
+.celebration-card {
+
+  --accent:
+    var(--gold-light);
+
+  --accent-soft:
+    rgba(215,170,80,.12);
+
+  position:
+    relative;
+
+  z-index:
+    1;
+
+  width:
+    min(100%,430px);
+
+  padding:
+    34px 26px 24px;
+
+  text-align:
+    center;
+
+  border:
+    1px solid
+    rgba(215,170,80,.3);
+
+  border-radius:
+    26px;
+
+  background:
+
+    radial-gradient(
+      circle at 50% 0%,
+      var(--accent-soft),
+      transparent 60%
+    ),
+
+    linear-gradient(
+      160deg,
+      #0b2546,
+      #04122a
+    );
+
+  box-shadow:
+    0 30px 80px
+    rgba(0,0,0,.45);
+
+  transform:
+    translateY(26px)
+    scale(.94);
+
+  transition:
+    transform .5s
+    cubic-bezier(.34,1.4,.64,1);
+
+}
+
+
+.celebration.show
+.celebration-card {
+
+  transform:
+    none;
+
+}
+
+
+/* calm moods: no bounce, cooler colors */
+
+.celebration-card.mood-calm {
+
+  --accent:
+    #a9c8ea;
+
+  --accent-soft:
+    rgba(120,165,215,.14);
+
+  border-color:
+    rgba(150,190,235,.24);
+
+  transition:
+    transform .8s
+    ease-out;
+
+}
+
+
+.celebration-card.mood-warm {
+
+  --accent:
+    #f5d48f;
+
+  --accent-soft:
+    rgba(245,190,100,.15);
+
+  transition:
+    transform .8s
+    ease-out;
+
+}
+
+
+.celebration-icon {
+
+  position:
+    relative;
+
+  width:
+    86px;
+
+  height:
+    86px;
+
+  margin:
+    0 auto 18px;
+
+  display:
+    grid;
+
+  place-items:
+    center;
+
+  border:
+    1px solid
+    var(--accent);
+
+  border-radius:
+    50%;
+
+  color:
+    var(--accent);
+
+  background:
+    var(--accent-soft);
+
+}
+
+
+.celebration-icon svg {
+
+  position:
+    relative;
+
+  z-index:
+    1;
+
+  width:
+    42px;
+
+  height:
+    42px;
+
+  fill:
+    none;
+
+  stroke:
+    currentColor;
+
+  stroke-width:
+    1.6;
+
+  stroke-linecap:
+    round;
+
+  stroke-linejoin:
+    round;
+
+}
+
+
+.celebration-title {
+
+  margin:
+    0;
+
+  color:
+    var(--accent);
+
+  font-size:
+    1.45rem;
+
+  font-weight:
+    900;
+
+}
+
+
+.celebration-text {
+
+  margin:
+    8px 0 0;
+
+  color:
+    rgba(230,236,244,.78);
+
+  font-size:
+    .85rem;
+
+  line-height:
+    1.9;
+
+}
+
+
+.celebration-question {
+
+  margin:
+    22px 0 14px;
+
+  padding-top:
+    18px;
+
+  border-top:
+    1px solid
+    rgba(255,255,255,.08);
+
+  color:
+    #e6ecf4;
+
+  font-size:
+    .9rem;
+
+  font-weight:
+    800;
+
+}
+
+
+.celebration-actions {
+
+  display:
+    grid;
+
+  gap:
+    9px;
+
+}
+
+
+/* ICON ANIMATIONS */
+
+.icon-pop {
+
+  animation:
+    iconPop
+    .7s
+    .1s
+    cubic-bezier(.34,1.56,.64,1)
+    both;
+
+}
+
+
+.icon-breathe {
+
+  animation:
+    iconBreathe
+    3.6s
+    ease-in-out
+    infinite;
+
+}
+
+
+.icon-ripple::before,
+.icon-ripple::after {
+
+  content:
+    "";
+
+  position:
+    absolute;
+
+  inset:
+    -1px;
+
+  border:
+    1px solid
+    var(--accent);
+
+  border-radius:
+    50%;
+
+  animation:
+    iconRipple
+    2s
+    ease-out
+    infinite;
+
+}
+
+
+.icon-ripple::after {
+
+  animation-delay:
+    1s;
+
+}
+
+
+.icon-flicker .flame {
+
+  transform-origin:
+    12px 11px;
+
+  animation:
+    flameFlicker
+    1.6s
+    ease-in-out
+    infinite;
+
+}
+
+
+.icon-glow {
+
+  animation:
+    iconGlow
+    2.8s
+    ease-in-out
+    infinite;
+
+}
+
+
 /* =========================================================
    ANIMATION
 ========================================================= */
+
+@keyframes iconPop {
+
+  from {
+
+    opacity:
+      0;
+
+    transform:
+      scale(.3)
+      rotate(-25deg);
+
+  }
+
+  to {
+
+    opacity:
+      1;
+
+    transform:
+      none;
+
+  }
+
+}
+
+
+@keyframes iconBreathe {
+
+  0%,
+  100% {
+
+    transform:
+      scale(1);
+
+    box-shadow:
+      0 0 0
+      rgba(150,190,235,0);
+
+  }
+
+  50% {
+
+    transform:
+      scale(1.05);
+
+    box-shadow:
+      0 0 34px
+      rgba(150,190,235,.22);
+
+  }
+
+}
+
+
+@keyframes iconRipple {
+
+  from {
+
+    opacity:
+      .7;
+
+    transform:
+      scale(1);
+
+  }
+
+  to {
+
+    opacity:
+      0;
+
+    transform:
+      scale(1.7);
+
+  }
+
+}
+
+
+@keyframes flameFlicker {
+
+  0%,
+  100% {
+
+    transform:
+      scale(1,1)
+      rotate(0);
+
+  }
+
+  30% {
+
+    transform:
+      scale(.94,1.08)
+      rotate(-3deg);
+
+  }
+
+  60% {
+
+    transform:
+      scale(1.04,.95)
+      rotate(2deg);
+
+  }
+
+}
+
+
+@keyframes iconGlow {
+
+  0%,
+  100% {
+
+    box-shadow:
+      0 0 0
+      rgba(245,190,100,0);
+
+  }
+
+  50% {
+
+    box-shadow:
+      0 0 38px
+      rgba(245,190,100,.3);
+
+  }
+
+}
+
+
+@media (prefers-reduced-motion: reduce) {
+
+  .icon-pop,
+  .icon-breathe,
+  .icon-glow,
+  .icon-flicker .flame,
+  .icon-ripple::before,
+  .icon-ripple::after {
+
+    animation:
+      none;
+
+  }
+
+}
+
 
 @keyframes introLogo {
 
@@ -2181,7 +2822,7 @@ label {
 
 
       <p class="workspace-description">
-        ممكن تختار أكتر من حاجة في نفس المرة.
+        اختار حاجة واحدة، وبعد ما تبعتها تقدر تبعت حاجة تانية.
       </p>
 
 
@@ -2189,7 +2830,7 @@ label {
       <div class="selection-info">
 
         <div class="selection-label">
-          اختار كل اللي حابب تشاركنا بيه
+          اختار الحاجة اللي حابب تشاركنا بيها
         </div>
 
         <div
@@ -2207,18 +2848,21 @@ label {
            CARDS
       ================================================== -->
 
-      <div class="types-grid">
+      <div
+        class="types-grid"
+        role="radiogroup"
+        aria-label="حابب تقولنا إيه؟"
+      >
 
 
         <button
           class="type-card"
           data-type="suggestion"
-          onclick="toggleType('suggestion',this)"
+          onclick="selectType('suggestion')"
         >
 
-          <div class="card-check">
-            ✓
-          </div>
+          <div class="card-check" aria-hidden="true"></div>
+
 
         <div class="type-icon">
 
@@ -2259,12 +2903,11 @@ label {
         <button
           class="type-card"
           data-type="complaint"
-          onclick="toggleType('complaint',this)"
+          onclick="selectType('complaint')"
         >
 
-          <div class="card-check">
-            ✓
-          </div>
+          <div class="card-check" aria-hidden="true"></div>
+
 
           <div class="type-icon">
 
@@ -2301,12 +2944,11 @@ label {
         <button
           class="type-card"
           data-type="contact"
-          onclick="toggleType('contact',this)"
+          onclick="selectType('contact')"
         >
 
-          <div class="card-check">
-            ✓
-          </div>
+          <div class="card-check" aria-hidden="true"></div>
+
 
           <div class="type-icon">
 
@@ -2342,12 +2984,11 @@ label {
         <button
           class="type-card"
           data-type="followup"
-          onclick="toggleType('followup',this)"
+          onclick="selectType('followup')"
         >
 
-          <div class="card-check">
-            ✓
-          </div>
+          <div class="card-check" aria-hidden="true"></div>
+
 
           <div class="type-icon">
 
@@ -2389,12 +3030,11 @@ label {
         <button
           class="type-card"
           data-type="prayer"
-          onclick="toggleType('prayer',this)"
+          onclick="selectType('prayer')"
         >
 
-          <div class="card-check">
-            ✓
-          </div>
+          <div class="card-check" aria-hidden="true"></div>
+
 
           <div class="type-icon">
 
@@ -2430,12 +3070,11 @@ label {
         <button
           class="type-card"
           data-type="positive"
-          onclick="toggleType('positive',this)"
+          onclick="selectType('positive')"
         >
 
-          <div class="card-check">
-            ✓
-          </div>
+          <div class="card-check" aria-hidden="true"></div>
+
 
           <div class="type-icon">
 
@@ -2472,12 +3111,11 @@ label {
         <button
           class="type-card"
           data-type="participate"
-          onclick="toggleType('participate',this)"
+          onclick="selectType('participate')"
         >
 
-          <div class="card-check">
-            ✓
-          </div>
+          <div class="card-check" aria-hidden="true"></div>
+
 
           <div class="type-icon">
 
@@ -3365,7 +4003,7 @@ label {
 
       <button
         class="submit-button"
-        onclick="location.reload()"
+        onclick="startAgain()"
       >
         إرسال حاجة تانية
       </button>
@@ -3376,6 +4014,78 @@ label {
   </section>
 
 </div>
+
+</div>
+
+
+
+<!-- =====================================================
+     CELEBRATION POPUP
+====================================================== -->
+
+<div
+  id="celebration"
+  class="celebration"
+  role="dialog"
+  aria-modal="true"
+  aria-labelledby="celebrationTitle"
+  hidden
+>
+
+  <canvas
+    id="celebrationCanvas"
+    class="celebration-canvas"
+  ></canvas>
+
+
+  <div
+    id="celebrationCard"
+    class="celebration-card"
+  >
+
+    <div
+      id="celebrationIcon"
+      class="celebration-icon"
+    ></div>
+
+
+    <h2
+      id="celebrationTitle"
+      class="celebration-title"
+    ></h2>
+
+
+    <p
+      id="celebrationText"
+      class="celebration-text"
+    ></p>
+
+
+    <div class="celebration-question">
+      عندك حاجة تانية حابب تقولهالنا؟
+    </div>
+
+
+    <div class="celebration-actions">
+
+      <button
+        id="celebrationYes"
+        class="submit-button"
+        onclick="submitAnother()"
+      >
+        أيوه، عندي
+      </button>
+
+      <button
+        class="secondary-button"
+        onclick="finishSubmitting()"
+      >
+        لأ، كده تمام
+      </button>
+
+    </div>
+
+  </div>
 
 </div>
 
@@ -3402,6 +4112,8 @@ let audioContext =
 window.addEventListener(
   'load',
   () => {
+
+    setupTypeCards();
 
     setupPhoneInputs();
 
@@ -3947,6 +4659,55 @@ async function playSuccessSound() {
 
 
 /* =========================================================
+   GENTLE SOUND - CALM / WARM MOODS
+========================================================= */
+
+async function playGentleSound() {
+
+  const ctx =
+    await getAudioContext();
+
+
+  if (!ctx) {
+
+    return;
+
+  }
+
+
+  playTone(
+    ctx,
+    293.66,
+    0,
+    1.4,
+    .030,
+    'sine'
+  );
+
+
+  playTone(
+    ctx,
+    440,
+    .25,
+    1.6,
+    .022,
+    'sine'
+  );
+
+
+  playTone(
+    ctx,
+    587.33,
+    .55,
+    1.8,
+    .014,
+    'sine'
+  );
+
+}
+
+
+/* =========================================================
    UI SOUND BINDINGS
 ========================================================= */
 
@@ -3976,109 +4737,145 @@ function setupUISounds() {
    SELECTION
 ========================================================= */
 
-function toggleType(
-  type,
-  card
-) {
+/* Cards behave as a radio group:
+   selectedTypes never holds more than one type. */
 
-  const wasSelected =
-    selectedTypes.has(
-      type
+function setupTypeCards() {
+
+  document
+    .querySelectorAll(
+      '.type-card'
+    )
+    .forEach(
+      card => {
+
+        card.setAttribute(
+          'role',
+          'radio'
+        );
+
+        card.setAttribute(
+          'aria-checked',
+          'false'
+        );
+
+      }
     );
-
-
-  if (
-    wasSelected
-  ) {
-
-    selectedTypes.delete(
-      type
-    );
-
-
-    card.classList.remove(
-      'active'
-    );
-
-
-    document
-      .getElementById(
-        'form-' + type
-      )
-      .classList.remove(
-        'show'
-      );
-
-  }
-  else {
-
-    selectedTypes.add(
-      type
-    );
-
-
-    card.classList.add(
-      'active'
-    );
-
-
-    document
-      .getElementById(
-        'form-' + type
-      )
-      .classList.add(
-        'show'
-      );
-
-  }
-
-
-  playCardSound(
-    type,
-    !wasSelected
-  );
-
-
-  updateSelectionUI();
-
-  updateProfilePanel();
 
 }
 
 
-function removeType(
+function selectType(
   type
 ) {
 
-  playRemoveSound();
+  if (
+    selectedTypes.has(
+      type
+    )
+  ) {
 
-
-  selectedTypes.delete(
-    type
-  );
-
-
-  const card =
-    document.querySelector(
-      `.type-card[data-type="${type}"]`
-    );
-
-
-  if (card) {
-
-    card.classList.remove(
-      'active'
-    );
+    return;
 
   }
 
 
+  selectedTypes.clear();
+
+  selectedTypes.add(
+    type
+  );
+
+
+  hideError();
+
+  playCardSound(
+    type,
+    true
+  );
+
+  syncSelection();
+
+}
+
+
+function removeType() {
+
+  playRemoveSound();
+
+  clearSelection();
+
+}
+
+
+function clearSelection() {
+
+  selectedTypes.clear();
+
+  syncSelection();
+
+}
+
+
+function selectedType() {
+
+  return selectedTypes
+    .values()
+    .next()
+    .value || null;
+
+}
+
+
+function syncSelection() {
+
   document
-    .getElementById(
-      'form-' + type
+    .querySelectorAll(
+      '.type-card'
     )
-    .classList.remove(
-      'show'
+    .forEach(
+      card => {
+
+        const active =
+          selectedTypes.has(
+            card.dataset.type
+          );
+
+
+        card.classList.toggle(
+          'active',
+          active
+        );
+
+        card.setAttribute(
+          'aria-checked',
+          String(active)
+        );
+
+      }
+    );
+
+
+  /* only the selected option's inputs are visible */
+
+  document
+    .querySelectorAll(
+      '.form-section'
+    )
+    .forEach(
+      section => {
+
+        section.classList.toggle(
+          'show',
+          selectedTypes.has(
+            section.id.replace(
+              'form-',
+              ''
+            )
+          )
+        );
+
+      }
     );
 
 
@@ -4091,8 +4888,8 @@ function removeType(
 
 function updateSelectionUI() {
 
-  const count =
-    selectedTypes.size;
+  const type =
+    selectedType();
 
 
   document
@@ -4102,7 +4899,7 @@ function updateSelectionUI() {
     .classList
     .toggle(
       'show',
-      count > 0
+      !!type
     );
 
 
@@ -4113,7 +4910,7 @@ function updateSelectionUI() {
     .classList
     .toggle(
       'show',
-      count > 0
+      !!type
     );
 
 
@@ -4123,30 +4920,79 @@ function updateSelectionUI() {
     );
 
 
-  if (
-    count === 0
-  ) {
+  box.textContent =
+    type
+      ? document
+          .querySelector(
+            `.type-card[data-type="${type}"] .type-title`
+          )
+          .textContent
+          .trim()
+      : 'لم تختار حاجة';
 
-    box.textContent =
-      'لم تختار حاجة';
+}
 
-  }
-  else if (
-    count === 1
-  ) {
 
-    box.textContent =
-      'اختيار واحد';
+/* Clears the inputs of one form after it was sent. */
 
-  }
-  else {
+function resetFormSection(
+  type
+) {
 
-    box.textContent =
-      'اخترت ' +
-      count +
-      ' اختيارات';
+  const section =
+    document.getElementById(
+      'form-' + type
+    );
 
-  }
+
+  section
+    .querySelectorAll(
+      'input, textarea, select'
+    )
+    .forEach(
+      field => {
+
+        if (
+          field.type === 'radio'
+        ) {
+
+          field.checked =
+            field.defaultChecked;
+
+        }
+        else if (
+          field.tagName === 'SELECT'
+        ) {
+
+          field.selectedIndex =
+            0;
+
+        }
+        else {
+
+          field.value =
+            '';
+
+        }
+
+      }
+    );
+
+
+  section
+    .querySelectorAll(
+      '.phone-input'
+    )
+    .forEach(
+      input => {
+
+        updatePhoneVisual(
+          input,
+          false
+        );
+
+      }
+    );
 
 }
 
@@ -5576,13 +6422,14 @@ function submitAll() {
     'جاري الإرسال...';
 
 
+  const submittedType =
+    selectedType();
+
+
   google.script.run
 
     .withSuccessHandler(
-      response => {
-
-        playSuccessSound();
-
+      () => {
 
         button.disabled =
           false;
@@ -5592,41 +6439,9 @@ function submitAll() {
           'إرسال';
 
 
-        document
-          .getElementById(
-            'mainContent'
-          )
-          .style
-          .display =
-            'none';
-
-
-        document
-          .getElementById(
-            'successBox'
-          )
-          .classList
-          .add(
-            'show'
-          );
-
-
-        document
-          .getElementById(
-            'successText'
-          )
-          .textContent =
-            response.count > 1
-              ? 'وصلت لنا كل الحاجات اللي اخترتها. شكرًا إنك شاركتنا.'
-              : 'شكرًا إنك شاركتنا.';
-
-
-        window.scrollTo({
-          top:
-            0,
-          behavior:
-            'smooth'
-        });
+        showCelebration(
+          submittedType
+        );
 
       }
     )
@@ -5660,6 +6475,1389 @@ function submitAll() {
       items:
         items
     });
+
+}
+
+
+/* =========================================================
+   CELEBRATION POPUP
+   Each type gets a mood that fits what was sent:
+   cheerful types celebrate, heavy ones stay calm and gentle.
+========================================================= */
+
+const CELEBRATIONS = {
+
+  suggestion: {
+    mood:
+      'joy',
+    effect:
+      'confetti',
+    sound:
+      'joy',
+    iconClass:
+      'icon-pop',
+    title:
+      'فكرتك وصلتنا!',
+    text:
+      'شكرًا على اقتراحك. هنقعد عليه سوا ونشوف إزاي نطوّر بيه الاجتماع.',
+    icon:
+      '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 18h6"/><path d="M10 22h4"/><path d="M8.2 14.3A7 7 0 1 1 15.8 14.3C14.65 15.15 14 16.15 14 18h-4c0-1.85-.65-2.85-1.8-3.7Z"/></svg>'
+  },
+
+  complaint: {
+    mood:
+      'calm',
+    effect:
+      'calmMotes',
+    sound:
+      'gentle',
+    iconClass:
+      'icon-breathe',
+    title:
+      'كلامك وصلنا',
+    text:
+      'آسفين إن في حاجة ضايقتك. كلامك هيتسمع باهتمام وخصوصية، وإنت مش لوحدك.',
+    icon:
+      '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.8 5.8a5.4 5.4 0 0 0-7.6 0L12 7l-1.2-1.2a5.4 5.4 0 0 0-7.6 7.6L12 22l8.8-8.6a5.4 5.4 0 0 0 0-7.6Z"/></svg>'
+  },
+
+  contact: {
+    mood:
+      'joy',
+    effect:
+      'goldMotes',
+    sound:
+      'joy',
+    iconClass:
+      'icon-ripple',
+    title:
+      'طلبك وصلنا',
+    text:
+      'حد من الخدمة هيتواصل معاك في أقرب وقت.',
+    icon:
+      '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21 15a4 4 0 0 1-4 4H8l-5 3 1.6-4.8A8 8 0 1 1 21 15Z"/><path d="M8 10h8"/><path d="M8 14h5"/></svg>'
+  },
+
+  followup: {
+    mood:
+      'warm',
+    effect:
+      'risingHearts',
+    sound:
+      'gentle',
+    iconClass:
+      'icon-glow',
+    title:
+      'شكرًا إنك فاكر إخواتك',
+    text:
+      'هنطمن عليه ونحاول نتواصل معاه قريب.',
+    icon:
+      '<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="9" cy="7" r="4"/><path d="M2.5 21a6.5 6.5 0 0 1 13 0"/><path d="M19 8v6"/><path d="M16 11h6"/></svg>'
+  },
+
+  prayer: {
+    mood:
+      'warm',
+    effect:
+      'embers',
+    sound:
+      'gentle',
+    iconClass:
+      'icon-glow icon-flicker',
+    title:
+      'طلبك وصلنا',
+    text:
+      'إحنا بنصلي معاك ومن أجلك. ربنا يسمع ويستجيب.',
+    icon:
+      '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 21h8"/><rect x="9.5" y="12" width="5" height="9" rx="1"/><path class="flame" d="M12 3c1.8 2.2 2.5 3.6 2.5 5a2.5 2.5 0 0 1-5 0c0-1.4.7-2.8 2.5-5Z"/></svg>'
+  },
+
+  positive: {
+    mood:
+      'joy',
+    effect:
+      'heartBurst',
+    sound:
+      'joy',
+    iconClass:
+      'icon-pop',
+    title:
+      'كلامك فرّحنا!',
+    text:
+      'شكرًا على كلامك الحلو، ده بيشجعنا نكمل ونعمل أحسن.',
+    icon:
+      '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="m12 3 1.45 4.55L18 9l-4.55 1.45L12 15l-1.45-4.55L6 9l4.55-1.45L12 3Z"/><path d="m19 15 .8 2.2L22 18l-2.2.8L19 21l-.8-2.2L16 18l2.2-.8L19 15Z"/></svg>'
+  },
+
+  participate: {
+    mood:
+      'joy',
+    effect:
+      'starBurst',
+    sound:
+      'joy',
+    iconClass:
+      'icon-pop',
+    title:
+      'أهلًا بيك معانا!',
+    text:
+      'مبسوطين إنك عايز تشارك. هنتواصل معاك قريب علشان نرتب سوا.',
+    icon:
+      '<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="8" cy="7" r="3"/><path d="M2.5 20a5.5 5.5 0 0 1 11 0"/><path d="M18 8v8"/><path d="M14 12h8"/></svg>'
+  }
+};
+
+
+function showCelebration(
+  type
+) {
+
+  const config =
+    CELEBRATIONS[type] ||
+    CELEBRATIONS.suggestion;
+
+
+  const overlay =
+    document.getElementById(
+      'celebration'
+    );
+
+
+  const icon =
+    document.getElementById(
+      'celebrationIcon'
+    );
+
+
+  document
+    .getElementById(
+      'celebrationCard'
+    )
+    .className =
+      'celebration-card mood-' +
+      config.mood;
+
+
+  icon.className =
+    'celebration-icon ' +
+    config.iconClass;
+
+
+  icon.innerHTML =
+    config.icon;
+
+
+  document
+    .getElementById(
+      'celebrationTitle'
+    )
+    .textContent =
+      config.title;
+
+
+  document
+    .getElementById(
+      'celebrationText'
+    )
+    .textContent =
+      config.text;
+
+
+  overlay.hidden =
+    false;
+
+
+  document.body.classList.add(
+    'modal-open'
+  );
+
+
+  /* force a reflow so the fade-in transition runs */
+
+  void overlay.offsetWidth;
+
+
+  overlay.classList.add(
+    'show'
+  );
+
+
+  if (
+    config.sound ===
+    'gentle'
+  ) {
+
+    playGentleSound();
+
+  }
+  else {
+
+    playSuccessSound();
+
+  }
+
+
+  setTimeout(
+    () => {
+
+      launchEffect(
+        config.effect
+      );
+
+    },
+    180
+  );
+
+
+  document
+    .getElementById(
+      'celebrationYes'
+    )
+    .focus({
+      preventScroll:
+        true
+    });
+
+}
+
+
+function isCelebrationOpen() {
+
+  return !document
+    .getElementById(
+      'celebration'
+    )
+    .hidden;
+
+}
+
+
+function closeCelebration() {
+
+  const overlay =
+    document.getElementById(
+      'celebration'
+    );
+
+
+  overlay.classList.remove(
+    'show'
+  );
+
+
+  document.body.classList.remove(
+    'modal-open'
+  );
+
+
+  stopEffect();
+
+
+  setTimeout(
+    () => {
+
+      overlay.hidden =
+        true;
+
+    },
+    350
+  );
+
+}
+
+
+/* Clears what was just sent so the next submit starts fresh.
+   The name and phone in "بياناتك" are kept. */
+
+function resetAfterSubmit() {
+
+  const type =
+    selectedType();
+
+
+  if (
+    type
+  ) {
+
+    resetFormSection(
+      type
+    );
+
+  }
+
+
+  hideError();
+
+  clearSelection();
+
+}
+
+
+function scrollToWorkspace() {
+
+  document
+    .querySelector(
+      '.workspace'
+    )
+    .scrollIntoView({
+      behavior:
+        'smooth',
+      block:
+        'start'
+    });
+
+}
+
+
+function submitAnother() {
+
+  closeCelebration();
+
+  resetAfterSubmit();
+
+  scrollToWorkspace();
+
+
+  document
+    .querySelector(
+      '.type-card'
+    )
+    .focus({
+      preventScroll:
+        true
+    });
+
+}
+
+
+function finishSubmitting() {
+
+  closeCelebration();
+
+  resetAfterSubmit();
+
+
+  document
+    .getElementById(
+      'mainContent'
+    )
+    .style
+    .display =
+      'none';
+
+
+  document
+    .getElementById(
+      'successBox'
+    )
+    .classList
+    .add(
+      'show'
+    );
+
+
+  scrollToWorkspace();
+
+}
+
+
+function startAgain() {
+
+  document
+    .getElementById(
+      'successBox'
+    )
+    .classList
+    .remove(
+      'show'
+    );
+
+
+  document
+    .getElementById(
+      'mainContent'
+    )
+    .style
+    .display =
+      '';
+
+
+  scrollToWorkspace();
+
+}
+
+
+/* Escape = "أيوه، عندي"; Tab stays inside the popup. */
+
+document.addEventListener(
+  'keydown',
+  event => {
+
+    if (
+      !isCelebrationOpen()
+    ) {
+
+      return;
+
+    }
+
+
+    if (
+      event.key ===
+      'Escape'
+    ) {
+
+      submitAnother();
+
+      return;
+
+    }
+
+
+    if (
+      event.key ===
+      'Tab'
+    ) {
+
+      const buttons =
+        document.querySelectorAll(
+          '.celebration-actions button'
+        );
+
+
+      const first =
+        buttons[0];
+
+
+      const last =
+        buttons[buttons.length - 1];
+
+
+      if (
+        event.shiftKey &&
+        document.activeElement === first
+      ) {
+
+        event.preventDefault();
+
+        last.focus();
+
+      }
+      else if (
+        !event.shiftKey &&
+        document.activeElement === last
+      ) {
+
+        event.preventDefault();
+
+        first.focus();
+
+      }
+
+    }
+
+  }
+);
+
+
+/* =========================================================
+   CELEBRATION EFFECTS - CANVAS PARTICLES
+========================================================= */
+
+const particles =
+  [];
+
+
+let effectFrame =
+  null;
+
+
+const PALETTES = {
+
+  confetti:
+    ['#f2d28b','#d7aa50','#ffffff','#5fa8ff','#55d59a','#ff8fb1'],
+
+  calm:
+    ['rgba(169,200,234,1)','rgba(210,228,248,1)','rgba(130,170,220,1)'],
+
+  gold:
+    ['#f2d28b','#ffe7b0','#d7aa50'],
+
+  hearts:
+    ['#ff7a9c','#ff9fb6','#f2d28b','#ffffff'],
+
+  warmHearts:
+    ['#f5d48f','#f0b989','#e8a0a0'],
+
+  embers:
+    ['#ffd98a','#ffc266','#fff1cc']
+};
+
+
+function prefersReducedMotion() {
+
+  return window.matchMedia(
+    '(prefers-reduced-motion: reduce)'
+  ).matches;
+
+}
+
+
+function random(
+  min,
+  max
+) {
+
+  return min +
+    Math.random() *
+    (max - min);
+
+}
+
+
+function pick(
+  list
+) {
+
+  return list[
+    Math.floor(
+      Math.random() *
+      list.length
+    )
+  ];
+
+}
+
+
+function effectContext() {
+
+  const canvas =
+    document.getElementById(
+      'celebrationCanvas'
+    );
+
+
+  const ratio =
+    window.devicePixelRatio || 1;
+
+
+  canvas.width =
+    window.innerWidth * ratio;
+
+  canvas.height =
+    window.innerHeight * ratio;
+
+
+  const ctx =
+    canvas.getContext(
+      '2d'
+    );
+
+
+  ctx.setTransform(
+    ratio,
+    0,
+    0,
+    ratio,
+    0,
+    0
+  );
+
+
+  return ctx;
+
+}
+
+
+function iconCenter() {
+
+  const box =
+    document
+      .getElementById(
+        'celebrationIcon'
+      )
+      .getBoundingClientRect();
+
+
+  return {
+    x:
+      box.left + box.width / 2,
+    y:
+      box.top + box.height / 2
+  };
+
+}
+
+
+function addParticle(
+  options
+) {
+
+  particles.push(
+    Object.assign(
+      {
+        x: 0,
+        y: 0,
+        vx: 0,
+        vy: 0,
+        gravity: 0,
+        drag: 1,
+        size: 6,
+        color: '#ffffff',
+        shape: 'circle',
+        rotation: random(0, Math.PI * 2),
+        spin: 0,
+        wobble: 0,
+        flutter: false,
+        glow: 0,
+        maxAlpha: 1,
+        fadeIn: false,
+        delay: 0,
+        life: 0,
+        maxLife: 120,
+        seed: Math.random() * 100
+      },
+      options
+    )
+  );
+
+}
+
+
+function launchEffect(
+  effect
+) {
+
+  if (
+    prefersReducedMotion() ||
+    !isCelebrationOpen()
+  ) {
+
+    return;
+
+  }
+
+
+  const width =
+    window.innerWidth;
+
+
+  const height =
+    window.innerHeight;
+
+
+  const center =
+    iconCenter();
+
+
+  /* SUGGESTION: two confetti cannons firing from the bottom corners */
+
+  if (
+    effect ===
+    'confetti'
+  ) {
+
+    const power =
+      Math.max(
+        .8,
+        height / 750
+      );
+
+
+    [0, 1].forEach(
+      side => {
+
+        [0, 260].forEach(
+          (delay, wave) => {
+
+            const count =
+              wave === 0
+                ? 85
+                : 45;
+
+
+            for (
+              let i = 0;
+              i < count;
+              i++
+            ) {
+
+              const angle =
+                random(
+                  52,
+                  80
+                ) *
+                Math.PI / 180;
+
+
+              const speed =
+                random(
+                  13,
+                  24
+                ) *
+                power;
+
+
+              addParticle({
+                x:
+                  side === 0
+                    ? -10
+                    : width + 10,
+                y:
+                  height + 10,
+                vx:
+                  Math.cos(angle) *
+                  speed *
+                  (side === 0 ? 1 : -1),
+                vy:
+                  -Math.sin(angle) *
+                  speed,
+                gravity:
+                  .32,
+                drag:
+                  .985,
+                size:
+                  random(7, 12),
+                color:
+                  pick(PALETTES.confetti),
+                shape:
+                  Math.random() < .75
+                    ? 'rect'
+                    : 'circle',
+                spin:
+                  random(-.25, .25),
+                wobble:
+                  random(.4, 1.2),
+                flutter:
+                  true,
+                delay:
+                  Math.round(delay / 16),
+                maxLife:
+                  random(200, 260)
+              });
+
+            }
+
+          }
+        );
+
+      }
+    );
+
+  }
+
+
+  /* COMPLAINT: slow, soft blue lights drifting up. Nothing loud. */
+
+  if (
+    effect ===
+    'calmMotes'
+  ) {
+
+    for (
+      let i = 0;
+      i < 42;
+      i++
+    ) {
+
+      addParticle({
+        x:
+          random(0, width),
+        y:
+          random(height * .55, height + 20),
+        vy:
+          random(-.75, -.3),
+        size:
+          random(2, 5),
+        color:
+          pick(PALETTES.calm),
+        wobble:
+          random(.15, .45),
+        glow:
+          14,
+        maxAlpha:
+          random(.3, .6),
+        fadeIn:
+          true,
+        delay:
+          Math.round(random(0, 90)),
+        maxLife:
+          random(320, 460)
+      });
+
+    }
+
+  }
+
+
+  /* CONTACT: a few gold lights floating around the ripple icon */
+
+  if (
+    effect ===
+    'goldMotes'
+  ) {
+
+    for (
+      let i = 0;
+      i < 26;
+      i++
+    ) {
+
+      const angle =
+        random(0, Math.PI * 2);
+
+
+      addParticle({
+        x:
+          center.x +
+          Math.cos(angle) * random(40, 140),
+        y:
+          center.y +
+          Math.sin(angle) * random(30, 110),
+        vx:
+          Math.cos(angle) * .35,
+        vy:
+          random(-.7, -.2),
+        size:
+          random(2, 4),
+        color:
+          pick(PALETTES.gold),
+        wobble:
+          .3,
+        glow:
+          10,
+        maxAlpha:
+          .8,
+        fadeIn:
+          true,
+        delay:
+          Math.round(random(0, 50)),
+        maxLife:
+          random(150, 220)
+      });
+
+    }
+
+  }
+
+
+  /* FOLLOW-UP: warm hearts rising slowly from the bottom */
+
+  if (
+    effect ===
+    'risingHearts'
+  ) {
+
+    for (
+      let i = 0;
+      i < 20;
+      i++
+    ) {
+
+      addParticle({
+        x:
+          random(width * .1, width * .9),
+        y:
+          height + 20,
+        vy:
+          random(-1.6, -.9),
+        size:
+          random(10, 17),
+        color:
+          pick(PALETTES.warmHearts),
+        shape:
+          'heart',
+        rotation:
+          random(-.3, .3),
+        wobble:
+          random(.3, .7),
+        maxAlpha:
+          .75,
+        fadeIn:
+          true,
+        delay:
+          Math.round(random(0, 110)),
+        maxLife:
+          random(300, 400)
+      });
+
+    }
+
+  }
+
+
+  /* PRAYER: candle embers rising quietly from the icon */
+
+  if (
+    effect ===
+    'embers'
+  ) {
+
+    for (
+      let i = 0;
+      i < 38;
+      i++
+    ) {
+
+      addParticle({
+        x:
+          center.x +
+          random(-22, 22),
+        y:
+          center.y -
+          10,
+        vx:
+          random(-.25, .25),
+        vy:
+          random(-1.3, -.5),
+        size:
+          random(1.5, 3.5),
+        color:
+          pick(PALETTES.embers),
+        wobble:
+          random(.2, .5),
+        glow:
+          12,
+        maxAlpha:
+          random(.5, .9),
+        fadeIn:
+          true,
+        delay:
+          Math.round(random(0, 140)),
+        maxLife:
+          random(170, 260)
+      });
+
+    }
+
+  }
+
+
+  /* POSITIVE: hearts bursting out of the icon */
+
+  if (
+    effect ===
+    'heartBurst'
+  ) {
+
+    for (
+      let i = 0;
+      i < 46;
+      i++
+    ) {
+
+      const angle =
+        random(
+          -Math.PI * .95,
+          -Math.PI * .05
+        );
+
+
+      const speed =
+        random(4, 10);
+
+
+      addParticle({
+        x:
+          center.x,
+        y:
+          center.y,
+        vx:
+          Math.cos(angle) * speed,
+        vy:
+          Math.sin(angle) * speed,
+        gravity:
+          .13,
+        drag:
+          .97,
+        size:
+          random(10, 19),
+        color:
+          pick(PALETTES.hearts),
+        shape:
+          'heart',
+        rotation:
+          random(-.4, .4),
+        spin:
+          random(-.03, .03),
+        maxLife:
+          random(120, 160)
+      });
+
+    }
+
+  }
+
+
+  /* PARTICIPATE: gold stars bursting in every direction */
+
+  if (
+    effect ===
+    'starBurst'
+  ) {
+
+    for (
+      let i = 0;
+      i < 64;
+      i++
+    ) {
+
+      const angle =
+        random(0, Math.PI * 2);
+
+
+      const speed =
+        random(4, 12);
+
+
+      addParticle({
+        x:
+          center.x,
+        y:
+          center.y,
+        vx:
+          Math.cos(angle) * speed,
+        vy:
+          Math.sin(angle) * speed - 2,
+        gravity:
+          .18,
+        drag:
+          .96,
+        size:
+          random(7, 14),
+        color:
+          pick(PALETTES.gold.concat('#ffffff')),
+        shape:
+          'star',
+        spin:
+          random(-.12, .12),
+        glow:
+          6,
+        maxLife:
+          random(110, 150)
+      });
+
+    }
+
+  }
+
+
+  if (
+    !effectFrame &&
+    particles.length
+  ) {
+
+    const ctx =
+      effectContext();
+
+
+    effectFrame =
+      requestAnimationFrame(
+        () => stepEffect(ctx)
+      );
+
+  }
+
+}
+
+
+function stepEffect(
+  ctx
+) {
+
+  ctx.clearRect(
+    0,
+    0,
+    window.innerWidth,
+    window.innerHeight
+  );
+
+
+  for (
+    let i = particles.length - 1;
+    i >= 0;
+    i--
+  ) {
+
+    const p =
+      particles[i];
+
+
+    if (
+      p.delay > 0
+    ) {
+
+      p.delay--;
+
+      continue;
+
+    }
+
+
+    p.life++;
+
+    p.vx *= p.drag;
+
+    p.vy =
+      p.vy * p.drag +
+      p.gravity;
+
+    p.x +=
+      p.vx +
+      Math.sin(
+        p.life * .05 +
+        p.seed
+      ) *
+      p.wobble;
+
+    p.y +=
+      p.vy;
+
+    p.rotation +=
+      p.spin;
+
+
+    if (
+      p.life >= p.maxLife ||
+      p.y > window.innerHeight + 60
+    ) {
+
+      particles.splice(
+        i,
+        1
+      );
+
+      continue;
+
+    }
+
+
+    drawParticle(
+      ctx,
+      p
+    );
+
+  }
+
+
+  effectFrame =
+    particles.length
+      ? requestAnimationFrame(
+          () => stepEffect(ctx)
+        )
+      : null;
+
+}
+
+
+function drawParticle(
+  ctx,
+  p
+) {
+
+  const progress =
+    p.life / p.maxLife;
+
+
+  let alpha =
+    p.maxAlpha;
+
+
+  if (
+    p.fadeIn &&
+    progress < .2
+  ) {
+
+    alpha *=
+      progress / .2;
+
+  }
+
+
+  if (
+    progress > .7
+  ) {
+
+    alpha *=
+      (1 - progress) / .3;
+
+  }
+
+
+  ctx.save();
+
+  ctx.globalAlpha =
+    Math.max(0, alpha);
+
+  ctx.translate(
+    p.x,
+    p.y
+  );
+
+  ctx.rotate(
+    p.rotation
+  );
+
+
+  /* paper flipping in the air */
+
+  if (
+    p.flutter
+  ) {
+
+    ctx.scale(
+      1,
+      Math.cos(
+        p.life * .18 +
+        p.seed
+      )
+    );
+
+  }
+
+
+  if (
+    p.glow
+  ) {
+
+    ctx.shadowBlur =
+      p.glow;
+
+    ctx.shadowColor =
+      p.color;
+
+  }
+
+
+  ctx.fillStyle =
+    p.color;
+
+
+  const s =
+    p.size;
+
+
+  ctx.beginPath();
+
+
+  if (
+    p.shape ===
+    'rect'
+  ) {
+
+    ctx.rect(
+      -s / 2,
+      -s / 4,
+      s,
+      s / 2
+    );
+
+  }
+  else if (
+    p.shape ===
+    'heart'
+  ) {
+
+    ctx.translate(
+      0,
+      -s / 2
+    );
+
+    ctx.moveTo(0, s * .3);
+    ctx.bezierCurveTo(0, 0, -s * .5, 0, -s * .5, s * .3);
+    ctx.bezierCurveTo(-s * .5, s * .6, 0, s * .8, 0, s);
+    ctx.bezierCurveTo(0, s * .8, s * .5, s * .6, s * .5, s * .3);
+    ctx.bezierCurveTo(s * .5, 0, 0, 0, 0, s * .3);
+
+  }
+  else if (
+    p.shape ===
+    'star'
+  ) {
+
+    for (
+      let i = 0;
+      i < 10;
+      i++
+    ) {
+
+      const radius =
+        i % 2
+          ? s * .42
+          : s;
+
+
+      const angle =
+        i * Math.PI / 5 -
+        Math.PI / 2;
+
+
+      ctx.lineTo(
+        Math.cos(angle) * radius / 2,
+        Math.sin(angle) * radius / 2
+      );
+
+    }
+
+    ctx.closePath();
+
+  }
+  else {
+
+    ctx.arc(
+      0,
+      0,
+      s / 2,
+      0,
+      Math.PI * 2
+    );
+
+  }
+
+
+  ctx.fill();
+
+  ctx.restore();
+
+}
+
+
+function stopEffect() {
+
+  particles.length =
+    0;
+
+
+  if (
+    effectFrame
+  ) {
+
+    cancelAnimationFrame(
+      effectFrame
+    );
+
+    effectFrame =
+      null;
+
+  }
+
+
+  const canvas =
+    document.getElementById(
+      'celebrationCanvas'
+    );
+
+
+  canvas
+    .getContext(
+      '2d'
+    )
+    .clearRect(
+      0,
+      0,
+      canvas.width,
+      canvas.height
+    );
 
 }
 
