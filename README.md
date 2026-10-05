@@ -148,3 +148,43 @@ version**. That keeps the same `/exec` URL, so `index.html` doesn't change.
 
 Optional: use [clasp](https://github.com/google/clasp) to push from this repo
 instead of copy-pasting (`clasp clone <scriptId>`, then `clasp push`).
+
+## Promo video
+
+A one-minute motion video that shows what people can send and ends with the
+link and a QR code. It comes in two shapes:
+
+| File                                    | Size      | For                            |
+| --------------------------------------- | --------- | ------------------------------ |
+| `videos/your-voice-matters-16x9-vN.mp4` | 1920×1080 | Website, YouTube               |
+| `videos/your-voice-matters-9x16-vN.mp4` | 1080×1920 | WhatsApp status, Reels, TikTok |
+
+Each render is saved as a new version (`-v1`, `-v2`, …) and never overwrites an
+earlier one, so you can always go back. The MP4s are kept out of git (see
+`.gitignore`) because of their size; share them directly or upload them where
+they'll be used.
+
+The video is built from code in [`video/`](video), so text, timing or the link
+can be changed and re-rendered:
+
+- `timeline.json` sets the tempo (120 BPM), the scene timings on that beat grid,
+  each bar's chord and drum energy, the text for every option, and the link.
+- `scene.html` holds the animation, including the 3D effects. Every frame is
+  drawn from a time value, so renders are repeatable.
+- `music.py` synthesizes the soundtrack (no licensing needed): drums, bass,
+  arpeggios, a hook melody, risers and sound effects, all from the timeline.
+- `render.mjs` opens the scene in headless Chrome, captures every frame, and
+  encodes the next version of the MP4 with ffmpeg.
+
+Requires Node 18+, Python 3 with numpy, ffmpeg, and Chrome or Edge.
+
+```bash
+cd video
+npm install
+python music.py
+node render.mjs
+```
+
+`node render.mjs --serve` starts a preview at
+`http://127.0.0.1:4173/video/scene.html?format=portrait&t=20`. Use
+`--still 12,30` for PNG frames and `--format landscape` to render one shape.

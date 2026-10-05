@@ -1,0 +1,13 @@
+{
+  "name": "your-voice-matters-video",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "music": "python music.py",
+    "render": "node render.mjs"
+  },
+  "dependencies": {
+    "puppeteer-core": "^23.11.1",
+    "qrcode": "^1.5.4"
+  }
+}
